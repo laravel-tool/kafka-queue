@@ -1,0 +1,39 @@
+{
+    "name": "laravel-tool/kafka-queue",
+    "description": "Laravel Kafka Queue driver with Horizon support",
+    "keywords": [
+        "php",
+        "laravel",
+        "kafka",
+        "queue",
+        "horizon"
+    ],
+    "type": "laravel-plugin",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Yuriy Potemkin",
+            "email": "ysoft2000@mail.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^8.3",
+        "ext-rdkafka": "*",
+        "ext-json": "*",
+        "laravel/framework": ">=10"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaravelTool\\KafkaQueue\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelTool\\KafkaQueue\\ServiceProvider"
+            ]
+        }
+    }
+}
