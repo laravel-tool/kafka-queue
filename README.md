@@ -18,7 +18,8 @@ composer require laravel-tool/kafka-queue
     'group_name' => env('KAFKA_QUEUE_GROUP', 'default'),
     'producer_timeout_ms' => 1000,
     'consumer_timeout_ms' => 3000,
-    'horizon' => true,
+    'queue_disable_length' => false, // Disable this if trouble with performance
+    'horizon' => true, // Support for Laravel Horizon
     'after_commit' => false,
 ],
 ```
