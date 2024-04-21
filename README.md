@@ -13,6 +13,13 @@ composer require laravel-tool/kafka-queue
 'kafka' => [
     'driver' => 'kafka',
     'broker_list' => env('KAFKA_BROKER_LIST', 'kafka:9092'),
+    'auth' => [
+        'enable' => env('KAFKA_AUTH_ENABLE', false),
+        'mechanism' => env('KAFKA_AUTH_MECHANISM', 'PLAIN'),
+        'username' => env('KAFKA_AUTH_USERNAME'),
+        'password' => env('KAFKA_AUTH_PASSWORD'),
+        'ssl_ca_location' => env('KAFKA_AUTH_SSL_CA_LOCATION'),
+    ],
     'queue' => env('KAFKA_QUEUE', 'default'),
     'heartbeat_ms' => env('KAFKA_HEARTBEAT', 5000),
     'group_name' => env('KAFKA_QUEUE_GROUP', 'default'),

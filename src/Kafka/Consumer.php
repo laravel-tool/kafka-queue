@@ -12,6 +12,8 @@ use RuntimeException;
 
 class Consumer
 {
+    use AuthConfigTrait;
+
     private KafkaConsumer $consumer;
     private Metadata $metadata;
     private array $topics;
@@ -24,7 +26,9 @@ class Consumer
     ) {
         $this->consumer = new KafkaConsumer($this->generateConfig($this->config));
 
-        $this->metadata();
+        if (!$this->config['queue_disable_length']) {
+            $this->metadata();
+        }
     }
 
     public function consume(string $topic): ?Message
@@ -54,6 +58,9 @@ class Consumer
 
     public function size(string $topicName): int
     {
+        if ($this->config['queue_disable_length']) {
+            return 0;
+        }
 
         try {
             if ($topic = $this->getTopic($topicName)) {
@@ -114,6 +121,8 @@ class Consumer
         $kafkaConfig->set('group.id', $config['group_name']);
         $kafkaConfig->set('heartbeat.interval.ms', $config['heartbeat_ms']);
         $kafkaConfig->set('auto.offset.reset', 'earliest');
+
+        $this->authConfig($kafkaConfig, $config);
 
         return $kafkaConfig;
     }

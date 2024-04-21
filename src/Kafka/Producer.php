@@ -9,6 +9,8 @@ use RdKafka\Producer as KafkaProducer;
 
 class Producer
 {
+    use AuthConfigTrait;
+
     private KafkaProducer $producer;
 
     public function __construct(
@@ -48,6 +50,8 @@ class Producer
     {
         $kafkaConfig = new KafkaConfig();
         $kafkaConfig->set('metadata.broker.list', $config['broker_list']);
+
+        $this->authConfig($kafkaConfig, $config);
 
         return $kafkaConfig;
     }
