@@ -32,6 +32,6 @@ composer require laravel-tool/kafka-queue
 ```
 
 ## Caution
-> It is not recommended to use it with deferred tasks due to the way Kafka works. 
+> It is not recommended to use it with delayed tasks due to the way Kafka works. 
 > When a deferred task reaches the execution time, it is again placed at the end 
 > of the queue and so on until the moment when it is allowed to be executed.
