@@ -75,12 +75,20 @@ class Consumer
                     $topicPartitions[] = new TopicPartition($topicName, $partition->getId());
                 }
 
+                /** @var TopicPartition[] $offsets */
                 $offsets = $this->consumer->getCommittedOffsets($topicPartitions, $this->config['consumer_timeout_ms']);
-                $size = 0;
+                $mappedOffsets = [];
                 foreach ($offsets as $offset) {
-                    /** @var TopicPartition $offset */
-                    $size += $watermarkOffsets[$offset->getPartition()][1] - max($offset->getOffset(),
-                            $watermarkOffsets[$offset->getPartition()][0]);
+                    $mappedOffsets[$offset->getPartition()] = $offset;
+                }
+
+                $size = 0;
+                foreach ($topic->getPartitions() as $partition) {
+                    $size += $watermarkOffsets[$partition->getId()][1]
+                        - max(
+                            $mappedOffsets[$partition->getId()]?->getOffset() ?? 0,
+                            $watermarkOffsets[$partition->getId()][0]
+                        );
                 }
 
                 return $size;
