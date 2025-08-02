@@ -60,7 +60,7 @@ class Queue extends BaseQueue implements QueueInterface
         );
 
         if ($this->horizon) {
-            $this->event($this->getQueueName($queue), new JobPushed($payload));
+            $this->event($this->getQueueName($queue), JobPushed::class, [$payload]);
         }
 
         return json_decode($payload, true)['uuid'] ?? null;
@@ -113,7 +113,7 @@ class Queue extends BaseQueue implements QueueInterface
 
         $this->consumer->commit();
 
-        $this->event($this->getQueueName($queue), new JobReserved($job->getRawBody()));
+        $this->event($this->getQueueName($queue), JobReserved::class, [$job->getRawBody()]);
 
         return $job;
     }
@@ -151,7 +151,7 @@ class Queue extends BaseQueue implements QueueInterface
 
     public function deleteReserved(string $queue, Job $job): void
     {
-        $this->event($this->getQueueName($queue), new JobDeleted($job, $job->getRawBody()));
+        $this->event($this->getQueueName($queue), JobDeleted::class, [$job, $job->getRawBody()]);
     }
 
     private function requeue(Job $job): void
@@ -169,11 +169,13 @@ class Queue extends BaseQueue implements QueueInterface
         return $queue ?? $this->defaultQueue;
     }
 
-    protected function event($queue, $event): void
+    protected function event($queue, $class, $args): void
     {
         if (!$this->horizon) {
             return;
         }
+
+        $event = new $class(...$args);
 
         if ($this->container && $this->container->bound(Dispatcher::class)) {
             $this->container->make(Dispatcher::class)->dispatch(

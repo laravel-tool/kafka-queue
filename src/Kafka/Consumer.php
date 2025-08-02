@@ -125,7 +125,7 @@ class Consumer
     private function generateConfig(array $config): KafkaConfig
     {
         $kafkaConfig = new KafkaConfig();
-        $kafkaConfig->set('metadata.broker.list', $config['broker_list']);
+        $kafkaConfig->set('bootstrap.servers', $config['broker_list']);
         $kafkaConfig->set('group.id', $config['group_name']);
         $kafkaConfig->set('heartbeat.interval.ms', $config['heartbeat_ms']);
         $kafkaConfig->set('auto.offset.reset', 'earliest');
