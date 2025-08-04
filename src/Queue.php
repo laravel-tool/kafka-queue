@@ -30,7 +30,7 @@ class Queue extends BaseQueue implements QueueInterface
         return $this->consumer->size($queue);
     }
 
-    public function readyNow(string $queue = null): int
+    public function readyNow(?string $queue = null): int
     {
         return $this->size($queue);
     }

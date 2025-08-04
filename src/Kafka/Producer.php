@@ -23,7 +23,7 @@ class Producer
         string $topic,
         string $payload,
         ?int $delay = null,
-        callable $callback = null,
+        ?callable $callback = null,
     ): void {
         $this->producer->newTopic($topic)->producev(
             partition: RD_KAFKA_PARTITION_UA,
